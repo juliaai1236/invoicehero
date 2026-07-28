@@ -10,38 +10,6 @@ function useAuth() {
 }
 
 function LandingPage({ onGetStarted, onSignup, onLogin }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [showLogin, setShowLogin] = useState(false);
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    if (!name || !email || !password) {
-      setError('All fields required');
-      return;
-    }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
-    setError('');
-    onSignup({ name, email, plan: 'free', joinedAt: Date.now() });
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (!loginEmail || !loginPassword) {
-      setError('Email and password required');
-      return;
-    }
-    setError('');
-    onLogin({ name: loginEmail.split('@')[0], email: loginEmail, plan: 'free', joinedAt: Date.now() });
-  };
-
   return (
     <div className="min-h-screen bg-[#06080f] text-slate-100 font-['Inter']">
       {/* Navigation */}
@@ -53,8 +21,8 @@ function LandingPage({ onGetStarted, onSignup, onLogin }) {
           <span className="font-semibold text-lg">InvoiceHero</span>
         </div>
         <div className="flex items-center gap-4">
-          <button onClick={() => setShowLogin(true)} className="text-slate-300 hover:text-white transition-colors">Sign In</button>
-          <button onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })} className="px-4 py-2 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-lg font-medium transition-all">Get Started Free</button>
+          <button onClick={onLogin} className="text-slate-300 hover:text-white transition-colors">Sign In</button>
+          <button onClick={onGetStarted} className="px-4 py-2 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-lg font-medium transition-all">Get Started Free</button>
         </div>
       </nav>
 
@@ -73,7 +41,7 @@ function LandingPage({ onGetStarted, onSignup, onLogin }) {
           Create professional invoices in 30 seconds, auto-chase late payments via personalized SMS and email sequences, and accept Stripe or PayPal payouts instantly.
         </p>
         <div className="flex justify-center gap-4">
-          <button onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-xl font-semibold text-lg flex items-center gap-2 transition-all">
+          <button onClick={onGetStarted} className="px-8 py-4 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-xl font-semibold text-lg flex items-center gap-2 transition-all">
             Get Started Free <ArrowRight className="w-5 h-5" />
           </button>
           <button className="px-8 py-4 glass hover:bg-white/5 rounded-xl font-semibold text-lg transition-all">
@@ -143,7 +111,7 @@ function LandingPage({ onGetStarted, onSignup, onLogin }) {
               <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#F7931E]" /> Unlimited invoices</li>
               <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#F7931E]" /> Manual payment reminders</li>
             </ul>
-            <button onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })} className="w-full py-3 glass hover:bg-white/5 rounded-lg transition-all">Get Started Free</button>
+            <button onClick={onGetStarted} className="w-full py-3 glass hover:bg-white/5 rounded-lg transition-all">Get Started Free</button>
           </div>
           <div className="glass p-8 fade-in border-2 border-[#F7931E] relative" style={{ animationDelay: '0.1s' }}>
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#F7931E] text-white text-xs font-semibold rounded-full">Most Popular</div>
@@ -156,7 +124,7 @@ function LandingPage({ onGetStarted, onSignup, onLogin }) {
               <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#F7931E]" /> Stripe & PayPal integration</li>
               <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#F7931E]" /> Custom invoice templates</li>
             </ul>
-            <button onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })} className="w-full py-3 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-lg transition-all font-semibold">Start 14-Day Trial</button>
+            <button onClick={onGetStarted} className="w-full py-3 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-lg transition-all font-semibold">Start 14-Day Trial</button>
           </div>
           <div className="glass p-8 fade-in" style={{ animationDelay: '0.2s' }}>
             <h3 className="text-lg font-semibold mb-2">Teams</h3>
@@ -168,7 +136,7 @@ function LandingPage({ onGetStarted, onSignup, onLogin }) {
               <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#F7931E]" /> Priority support</li>
               <li className="flex items-center gap-2"><Check className="w-4 h-4 text-[#F7931E]" /> Everything in Growth</li>
             </ul>
-            <button onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })} className="w-full py-3 glass hover:bg-white/5 rounded-lg transition-all">Contact Sales</button>
+            <button onClick={onGetStarted} className="w-full py-3 glass hover:bg-white/5 rounded-lg transition-all">Contact Sales</button>
           </div>
         </div>
       </section>
@@ -219,52 +187,14 @@ function LandingPage({ onGetStarted, onSignup, onLogin }) {
         </div>
       </section>
 
-      {/* Signup Form */}
-      <section id="signup-form" className="max-w-md mx-auto px-8 pb-20">
-        <div className="glass p-8">
-          <h3 className="text-xl font-semibold mb-6 text-center">Start saving 4+ hours per week</h3>
-          {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}
-          <form onSubmit={showLogin ? handleLogin : handleSignup}>
-            {!showLogin && (
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
-                className="w-full p-3 mb-3 bg-[#0b1020] border border-[#2a3350] rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-[#F7931E]"
-              />
-            )}
-            <input
-              value={showLogin ? loginEmail : email}
-              onChange={(e) => showLogin ? setLoginEmail(e.target.value) : setEmail(e.target.value)}
-              placeholder="Work email"
-              type="email"
-              required
-              className="w-full p-3 mb-3 bg-[#0b1020] border border-[#2a3350] rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-[#F7931E]"
-            />
-            <input
-              value={showLogin ? loginPassword : password}
-              onChange={(e) => showLogin ? setLoginPassword(e.target.value) : setPassword(e.target.value)}
-              placeholder="Password (min 6 chars)"
-              type="password"
-              required
-              className="w-full p-3 mb-4 bg-[#0b1020] border border-[#2a3350] rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-[#F7931E]"
-            />
-            <button
-              type="submit"
-              className="w-full py-3 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-lg font-semibold transition-all"
-            >
-              {showLogin ? 'Log In' : 'Get Started Free'}
-            </button>
-          </form>
-          <p className="text-center mt-4 text-sm text-slate-400">
-            {showLogin ? "Don't have an account? " : "Already have an account? "}
-            <button
-              onClick={() => { setShowLogin(!showLogin); setError(''); }}
-              className="text-[#F7931E] hover:underline"
-            >
-              {showLogin ? 'Sign up' : 'Log in'}
-            </button>
-          </p>
+      {/* CTA Section */}
+      <section className="max-w-4xl mx-auto px-8 pb-20 text-center">
+        <div className="glass p-12">
+          <h2 className="text-3xl font-bold mb-4">Ready to save 4+ hours per week?</h2>
+          <p className="text-slate-400 mb-8 max-w-lg mx-auto">Join thousands of freelancers and agencies who already use InvoiceHero to get paid faster.</p>
+          <button onClick={onGetStarted} className="px-8 py-4 bg-[#F7931E] hover:bg-[#e67e1a] text-white rounded-xl font-semibold text-lg transition-all">
+            Get Started Free
+          </button>
         </div>
       </section>
 
